@@ -11,9 +11,6 @@ class PopularModel {
   double voteAverage;
   int voteCount;
 
-  /*PopularModel(String override){
-    this.overview = override;
-  }*/
 
   PopularModel({
     required this.backdropPath,

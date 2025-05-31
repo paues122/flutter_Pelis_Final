@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tap2025/models/popular_model.dart';
 import 'package:tap2025/network/api_popular.dart';
+import 'package:tap2025/screens/trailer_screen.dart';
 
 class PopularScreen extends StatefulWidget {
   const PopularScreen({super.key});
@@ -49,29 +50,54 @@ class _PopularScreenState extends State<PopularScreen> {
     );
   }
 
-  Widget ItemPopular(PopularModel popular){
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Stack(
-        alignment: Alignment.bottomLeft,
-        children: [
-          FadeInImage(
-            placeholder: AssetImage('assets/loading.gif'), 
-            image:  NetworkImage(popular.backdropPath)
+Widget ItemPopular(PopularModel popular) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(10),
+    child: Stack(
+      alignment: Alignment.bottomLeft,
+      children: [
+        FadeInImage(
+          placeholder: AssetImage('assets/loading.gif'),
+          image: NetworkImage(popular.backdropPath),
+          fit: BoxFit.cover,
+        ),
+        Container(
+          height: 100,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.black87,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                title: Text(popular.title, style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.chevron_right, color: Colors.white),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final trailerKey = await apiPopular!.getTrailerKey(popular.id);
+                    if (trailerKey != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TrailerScreen(youtubeKey: trailerKey),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Tráiler no disponible")),
+                      );
+                    }
+                  },
+                  child: Text("Ver tráiler"),
+                ),
+              ),
+            ],
           ),
-          Container(
-            height: 70,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.black,
-            child: ListTile(
-              onTap: ()=>Navigator.pushNamed(context,'/detail',arguments: popular),
-              title: Text(popular.title, style: TextStyle(color: Colors.white),),
-              trailing: Icon(Icons.chevron_right, size: 30,),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
+        ),
+      ],
+    ),
+  );
+}
 }

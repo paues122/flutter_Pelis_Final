@@ -15,8 +15,8 @@ class DashboardScreen extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
             ),
-            accountName: Text('Rubensin Torres Frias'), 
-            accountEmail: Text('ruben.torres@itcelaya.edu.mx')
+            accountName: Text('Paulina Escalantes'), 
+            accountEmail: Text('pauesc122@gmail.com')
           );
         },
         extendedTheme: const SidebarXTheme(
@@ -29,24 +29,24 @@ class DashboardScreen extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/reto');
             },
-            icon: Icons.home, label: 'Challenge App'
+            icon: Icons.home, label: 'Challenge Pelis'
           ),
           SidebarXItem(
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/api');
             },
-            icon: Icons.movie, label: 'Popular Movies'
+            icon: Icons.movie, label: 'Pelis populares'
           )
         ],
       ),
       appBar: AppBar(
-        title: Text('Panel de control'),
+        title: Text('Panel principal'),
       ),
       body: HawkFabMenu(
         icon: AnimatedIcons.menu_arrow,
         body: const Center(
-          child: Text('Tu Inicio de sesion'),
+          child: Text('LOGIN'),
         ), 
         items: [
           HawkFabMenuItem(
