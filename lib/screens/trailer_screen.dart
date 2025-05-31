@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -27,7 +28,7 @@ class _TrailerScreenState extends State<TrailerScreen> {
 
   @override
   void dispose() {
-    _controller.dispose(); // libera recursos del reproductor
+    _controller.dispose();
     super.dispose();
   }
 

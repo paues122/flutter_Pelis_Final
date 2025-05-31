@@ -1,3 +1,4 @@
+
 class PopularModel {
   String backdropPath;
   int id;
@@ -10,7 +11,6 @@ class PopularModel {
   String title;
   double voteAverage;
   int voteCount;
-
 
   PopularModel({
     required this.backdropPath,
@@ -26,21 +26,19 @@ class PopularModel {
     required this.voteCount,
   });
 
-  factory PopularModel.fromMap(Map<String,dynamic> movie){
+  factory PopularModel.fromMap(Map<String, dynamic> movie) {
     return PopularModel(
-      backdropPath: 'https://image.tmdb.org/t/p/w500/${movie['backdrop_path']}'
-      ?? 'https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg', 
-      id: movie['id'], 
-      originalLanguage: movie['original_language'], 
-      originalTitle: movie['original_title'], 
-      overview: movie['overview'], 
-      popularity: movie['popularity'], 
-      posterPath: movie['poster_path'], 
-      releaseDate: movie['release_date'], 
-      title: movie['title'], 
-      voteAverage: movie['vote_average'], 
-      voteCount: movie['vote_count']
+      backdropPath: 'https://image.tmdb.org/t/p/w500/${movie['backdrop_path'] ?? ''}',
+      id: movie['id'],
+      originalLanguage: movie['original_language'],
+      originalTitle: movie['original_title'],
+      overview: movie['overview'],
+      popularity: movie['popularity'],
+      posterPath: movie['poster_path'],
+      releaseDate: movie['release_date'],
+      title: movie['title'],
+      voteAverage: movie['vote_average'].toDouble(),
+      voteCount: movie['vote_count'],
     );
   }
-
 }
