@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   youtube_player_flutter: ^8.1.1
   webview_flutter: ^4.2.2
+  flutter_rating_bar: ^4.0.1
 
 
 
@@ -68,6 +69,7 @@ flutter:
     - assets/logo.webp
     - assets/boton.json
     - assets/loading.json
+    - assets/placeholder_actor.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

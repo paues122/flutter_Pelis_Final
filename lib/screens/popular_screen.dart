@@ -47,7 +47,19 @@ class _PopularScreenState extends State<PopularScreen> {
                   return Card(
                     child: Column(
                       children: [
-                        Image.network(movie.backdropPath),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/detail',
+                              arguments: movie,
+                            );
+                          },
+                          child: Hero(
+                            tag: 'movie-poster-${movie.id}',
+                            child: Image.network(movie.backdropPath),
+                          ),
+                        ),
                         ListTile(
                           title: Text(movie.title),
                           subtitle: Text(
@@ -63,7 +75,6 @@ class _PopularScreenState extends State<PopularScreen> {
                               color: Colors.red,
                             ),
                             onPressed: () {
-                              // Actualizar favoriteMovieIds global
                               final updatedFavorites = List<int>.from(favoriteIds);
                               if (updatedFavorites.contains(movie.id)) {
                                 updatedFavorites.remove(movie.id);
