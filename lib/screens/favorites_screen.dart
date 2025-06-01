@@ -4,14 +4,14 @@ import 'package:tap2025/network/api_popular.dart';
 import 'package:tap2025/screens/trailer_screen.dart';
 import 'package:tap2025/utils/global_values.dart';
 
-class PopularScreen extends StatefulWidget {
-  const PopularScreen({super.key});
+class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({super.key});
 
   @override
-  State<PopularScreen> createState() => _PopularScreenState();
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
 
-class _PopularScreenState extends State<PopularScreen> {
+class _FavoritesScreenState extends State<FavoritesScreen> {
   ApiPopular? apiPopular;
 
   @override
@@ -20,26 +20,36 @@ class _PopularScreenState extends State<PopularScreen> {
     apiPopular = ApiPopular();
   }
 
+  Future<List<PopularModel>> _getFavoriteMovies() async {
+    final allMovies = await apiPopular!.getPopularMovies();
+    // Filtrar películas para incluir solo las que están en favoriteMovieIds
+    return allMovies.where((movie) => GlobalValues.favoriteMovieIds.value.contains(movie.id)).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Películas Populares")),
-      body: FutureBuilder<List<PopularModel>>(
-        future: apiPopular!.getPopularMovies(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No hay datos'));
+      appBar: AppBar(title: const Text("Películas Favoritas")),
+      body: ValueListenableBuilder<List<int>>(
+        valueListenable: GlobalValues.favoriteMovieIds,
+        builder: (context, favoriteIds, _) {
+          if (favoriteIds.isEmpty) {
+            return const Center(child: Text('No hay películas favoritas'));
           }
 
-          final movies = snapshot.data!;
+          return FutureBuilder<List<PopularModel>>(
+            future: _getFavoriteMovies(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('No hay películas favoritas'));
+              }
 
-          return ValueListenableBuilder<List<int>>(
-            valueListenable: GlobalValues.favoriteMovieIds,
-            builder: (context, favoriteIds, _) {
+              final movies = snapshot.data!;
+
               return ListView.builder(
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
@@ -56,20 +66,14 @@ class _PopularScreenState extends State<PopularScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: IconButton(
-                            icon: Icon(
-                              favoriteIds.contains(movie.id)
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
+                            icon: const Icon(
+                              Icons.favorite,
                               color: Colors.red,
                             ),
                             onPressed: () {
-                              // Actualizar favoriteMovieIds global
-                              final updatedFavorites = List<int>.from(favoriteIds);
-                              if (updatedFavorites.contains(movie.id)) {
-                                updatedFavorites.remove(movie.id);
-                              } else {
-                                updatedFavorites.add(movie.id);
-                              }
+                              // Quitar de favoritos
+                              final updatedFavorites = List<int>.from(GlobalValues.favoriteMovieIds.value)
+                                ..remove(movie.id);
                               GlobalValues.favoriteMovieIds.value = updatedFavorites;
                             },
                           ),

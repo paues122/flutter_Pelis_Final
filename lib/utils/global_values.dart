@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
 class GlobalValues {
-  static ValueNotifier themeMode = ValueNotifier(1); 
+  static ValueNotifier<int> themeMode = ValueNotifier<int>(0);
+  static ValueNotifier<List<int>> favoriteMovieIds = ValueNotifier<List<int>>([]);
 }
